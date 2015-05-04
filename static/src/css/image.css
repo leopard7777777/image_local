@@ -1,0 +1,13 @@
+.openerp .oe_kanban_view .oe_kanban_image_exp {
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+	max-width: 150px;
+	overflow: hidden;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+	-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}

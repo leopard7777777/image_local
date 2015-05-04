@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<record id="image_local_form_view" model="ir.ui.view">
+			<field name="name">Parent Images Form View</field>
+			<field name="model">image.local</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Listing Rank">
+					<group col="4" colspan="4">
+						<field name="name" />
+					</group>
+					<group col="4" colspan="4">
+						<field name="uri" widget="image_local" />
+					</group>
+				</form>
+			</field>
+		</record>
+
+		<record id="image_local_kanban_view" model="ir.ui.view">
+			<field name="name">Parent Images Kanban View</field>
+			<field name="model">image.local</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<field name="uri" />
+					<!-- 自定义template，参见 product包中product_view.xml中product_template_kanban_view -->
+					<templates>
+						<t t-name="kanban-box">
+							<div class="oe_kanban_vignette oe_semantic_html_override">
+								<a type="open">
+									<img t-att-src=" kanban_image('image.local','uri', record.id.value) "
+										class="oe_kanban_image_exp" />
+								</a>
+								<div class="oe_kanban_details">
+									<h4>
+										<a type="open">
+											<field name="name" />
+										</a>
+									</h4>
+								</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+
+		<record id="image_local_tree_view" model="ir.ui.view">
+			<field name="name">Parent Images Tree View</field>
+			<field name="model">image.local</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Parent Images">
+					<field name="name" />
+					<field name="uri" widget="image_local" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="image_local_search_view" model="ir.ui.view">
+			<field name="name">Parent Images Search View</field>
+			<field name="model">image.local</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Parent Images">
+					<field name="name" />
+				</search>
+			</field>
+		</record>
+
+		<record id="action_image_local" model="ir.actions.act_window">
+			<field name="name">Parent Images</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">image.local</field>
+			<field name="view_mode">kanban,tree,form</field>
+			<field name="view_type">form</field>
+			<field name="view_id" ref="image_local_tree_view" />
+			<field name="search_view_id" ref="image_local_search_view" />
+		</record>
+
+		<menuitem id="menu_image_local_root" sequence="0" name="Parent Images" />
+
+		<menuitem id="menu_image_local_main" name="Parent Images Main"
+			icon="terp-sale" parent="menu_image_local_root" sequence="10" />
+
+		<menuitem id="menu_image_local" name="Parent Images" icon="terp-sale"
+			action="action_image_local" parent="menu_image_local_main" sequence="20" />
+
+
+
+
+	</data>
+</openerp>

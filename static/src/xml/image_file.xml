@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<!-- 复制FieldBinaryImage，修改template名称 -->
+<t t-name="FieldImageFile">
+    <span class="oe_form_field oe_form_field_image" t-att-style="widget.node.attrs.style">
+        <t t-if="!widget.get('effective_readonly')">
+            <div class="oe_form_field_image_controls oe_edit_only">
+              <i
+	class="fa fa-pencil fa-1g col-md-offset-1 pull-left  oe_form_binary_file_edit"
+	title="Edit" />
+	 <i class="fa fa-picture-o fa-1g  oe_form_binary_url_upload" title="URL" />
+              <i
+	class="fa fa-trash-o fa-1g col-md-offset-1 oe_form_binary_file_clear"
+	title="Clear" />
+                <div class="oe_form_binary_progress" style="display: none">
+                    <img t-att-src='_s + "/web/static/src/img/throbber.gif"'
+	width="16" height="16" />
+                    <b>Uploading ...</b>
+                </div>
+                <!-- 这个里面要修改 -->
+                <t t-call="HiddenInputImageFile">
+                    <t t-set="fileupload_id" t-value="widget.fileupload_id" />
+                </t>
+            </div>
+        </t>
+    </span>
+</t>
+
+<!-- 复制FieldBinaryImage，修改POST路径 -->
+<t t-name="HiddenInputImageFile">
+    <div t-attf-class="oe_hidden_input_file #{fileupload_class or ''}"
+	t-att-style="fileupload_style">
+        <form class="oe_form_binary_form" t-att-target="fileupload_id"
+	method="post" enctype="multipart/form-data" t-att-action="fileupload_action || '/web/images/upload'">  <!-- POST路径对应http route中的上传图片controller -->
+            <input type="hidden" name="session_id" value="" />
+            <input type="hidden" name="callback" t-att-value="fileupload_id" />
+            <t t-raw="0" />
+            <input type="file" class="oe_form_binary_file" name="ufile"
+	t-if="widget.widget!='image_file'" />										<!-- t-if 判断也要改 -->
+            <input type="file" class="oe_form_binary_file" name="ufile"
+	accept="image/*" t-if="widget.widget=='image_file'" />
+        </form>
+        <iframe t-att-id="fileupload_id" t-att-name="fileupload_id"
+	style="display: none" />
+    </div>
+</t>
+
+</templates>
