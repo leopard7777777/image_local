@@ -36,7 +36,7 @@ openerp.image_local = function(instance) {
 					 * && !instance.web.form .is_bin_size(this.get('value'))
 					 **********************************************************/
 					) {
-						//此处url解码后，根据是否有http://打头来判断是本地图片还是网络图片
+						// 此处url解码后，根据是否有http://打头来判断是本地图片还是网络图片
 						if (decodeURIComponent(p_val).indexOf("http://") != 0) {
 							// 获取图片的http route
 							url = this.session.url('/web/images/get', {
@@ -125,21 +125,21 @@ openerp.image_local = function(instance) {
 					// this.$el.find('.oe_form_binary_file_edit').click(function(event){
 					// self.$el.find('input.oe_form_binary_file').click();
 					// });
-					//在template中加入了一个pic url上传的按钮
+					// 在template中加入了一个pic url上传的按钮
 					this.$el.find('.oe_form_binary_url_upload').click(
 							this.on_pic_url);
 
 				},
 				on_pic_url : function(ev) {
 					var self = this;
-					//使用jquery ui dialog
+					// 使用jquery ui dialog
 					var $url_dialog = $("<div></div>")
 							.html(
 									"<form><fieldset><label for='pic_url'>URL：</label><span class='oe_form_field oe_form_field_char'><input type='text' name='pic_url' id='pic_url' style='width:400px' class='text ui-widget-content ui-corner-all'/></span></fieldset></form>")
 							.dialog(
 									{
 										title : "Please Enter Picture URL",
-										//生成dialog是自动打开
+										// 生成dialog是自动打开
 										autoOpen : true,
 										height : 160,
 										width : 500,
@@ -170,7 +170,7 @@ openerp.image_local = function(instance) {
 																	_t("There was a problem while get your pic"));
 												};// 它在图像载入失败后调用，图像载入失败不会调用onload事件。
 												$(this).dialog("close");
-												//dialog时用完后必须要移除，不然val不会改变
+												// dialog时用完后必须要移除，不然val不会改变
 												$(this).remove();
 												return true;
 											},
@@ -199,7 +199,7 @@ openerp.image_local = function(instance) {
 								+ instance.web.human_size(size) + ")";
 						this.binary_value = true;
 						this.set_filename(name);
-						// this.render_value();
+						this.render_value();
 						this.do_warn(_t("File Upload"),
 								_t("File Upload Successfully !"));
 					} else {
