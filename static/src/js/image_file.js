@@ -5,44 +5,18 @@ openerp.image_local = function(instance) {
 
 	instance.web_kanban.KanbanRecord.include({
 		kanban_image : function(model, field, id, cache, options) {
-			var url;
-			if (this.record[model] == 'image.local') {
-				// 获取图片的http route
-				u = this.record[field].value;
-				if (u) {
-					if (decodeURIComponent(u).indexOf("http://") != 0) {
-						url = this.session.url('/web/images/get', {
-							file_name : u
-						});
-					} else {
-						url = decodeURIComponent(u);
-					}
+			// 获取图片的http route
+			u = this.record[field].value;
+			if (u) {
+				if (decodeURIComponent(u).indexOf("http://") != 0) {
+					url = this.session.url('/web/images/get', {
+						file_name : u
+					});
 				} else {
-					url = no_image;
+					url = decodeURIComponent(u);
 				}
 			} else {
-				options = options || {};
-				if (this.record[field]
-						&& this.record[field].value
-						&& !instance.web.form
-								.is_bin_size(this.record[field].value)) {
-					url = 'data:image/png;base64,' + this.record[field].value;
-				} else if (this.record[field] && !this.record[field].value) {
-					url = "/web/static/src/img/placeholder.png";
-				} else {
-					id = JSON.stringify(id);
-					if (options.preview_image)
-						field = options.preview_image;
-					url = this.session.url('/web/binary/image', {
-						model : model,
-						field : field,
-						id : id
-					});
-					if (cache !== undefined) {
-						// Set the cache duration in seconds.
-						url += '&cache=' + parseInt(cache, 10);
-					}
-				}
+				url = no_image;
 			}
 			return url;
 		}
@@ -336,6 +310,6 @@ openerp.image_local = function(instance) {
 			});
 
 	instance.web.form.widgets = instance.web.form.widgets.extend({
-		'image_local' : 'instance.web.form.FieldImageFile',
+		'image' : 'instance.web.form.FieldImageFile',
 	});
 };
