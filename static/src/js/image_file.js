@@ -148,8 +148,10 @@ openerp.image_local = function(instance) {
 											"Confirm" : function() {
 												var pic_obj = new Image();
 												var pic_url = $("#pic_url")
-														.val();
-												if (pic_url.indexOf('http://') != 0) {
+														.val().replace(
+																'https://',
+																'http://');
+												if (!/http:\/\/*/.test(pic_url)) {
 													pic_url = 'http://'
 															+ pic_url;
 												}
@@ -310,6 +312,6 @@ openerp.image_local = function(instance) {
 			});
 
 	instance.web.form.widgets = instance.web.form.widgets.extend({
-		'image_local' : 'instance.web.form.FieldImageFile',
+		'image' : 'instance.web.form.FieldImageFile',
 	});
 };
