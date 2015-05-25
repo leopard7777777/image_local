@@ -13,13 +13,13 @@ import openerp
 from openerp.addons.web.controllers.main import Binary
 
 
-class image_file(Binary):
+class image_file(http.Controller):
 
     @http.route('/web/images/get', type='http', auth="user")
     def get(self, file_name):
         # 防御本地包含
         file_name = file_name.replace("../", "")
-        addons_path = http.addons_manifest['web']['addons_path'] + "/web/static/src/img/storage/" + file_name
+        addons_path = http.addons_manifest['image_local']['addons_path'] + "/image_cache/" + file_name
         try:
             file = open(addons_path, 'rb')
             content = file.read()
@@ -42,7 +42,7 @@ class image_file(Binary):
 #             args = [len(data), ufile.filename,
 #                     ufile.content_type, base64.b64encode(data)]
             if data:
-                addons_path = http.addons_manifest['web']['addons_path'] + "/web/static/src/img/storage/"
+                addons_path = http.addons_manifest['image_local']['addons_path'] + "/image_cache/"
                 if not os.path.isdir(addons_path):
                     os.mkdir(addons_path)
                 buff = StringIO.StringIO()
