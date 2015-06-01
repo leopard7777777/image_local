@@ -145,7 +145,7 @@ openerp.image_local = function(instance) {
 								buttons : {
 									"Confirm" : function() {
 										var pic_obj = new Image();
-										var pic_url = $("#pic_url").val().replace('https://', 'http://');
+										var pic_url = $(this).find("#pic_url").val().replace('https://', 'http://');
 										if (!/http:\/\/*/.test(pic_url)) {
 											pic_url = 'http://' + pic_url;
 										}
