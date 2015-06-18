@@ -21,13 +21,11 @@ class image_file(http.Controller):
         file_name = file_name.replace("../", "")
         addons_path = http.addons_manifest['image_local']['addons_path'] + "/image_cache/" + file_name
         try:
-            file = open(addons_path, 'rb')
-            content = file.read()
+            with open(addons_path, 'rb') as file:
+                content = file.read()
+                return content
         except:
-            pass
-        finally:
-            file.close()
-        return content
+            return ""
     
     @http.route('/web/images/upload', type='http', auth="user")
     def upload(self, callback, ufile):
@@ -53,9 +51,8 @@ class image_file(http.Controller):
                 file_name += ext
                 addons_path += file_name
     #             file_name = "/web/static/src/img/image_multi/" + file_name
-                file = open(addons_path, 'wb')
-                file.write(read)
-                file.close()
+                with open(addons_path, 'wb') as file:
+                    file.write(read)
                 args = [len(data), ufile.filename, ufile.content_type, file_name]
             else:
                 args = []

@@ -92,16 +92,16 @@ openerp.image_local = function(instance) {
 					this.render_value();
 					this.set_filename('');
 				},
-				set_value : function(value_) {
-					var changed = value_ !== this.get_value();
-					this._super.apply(this, arguments);
-					if (!changed) {
-						this.trigger("change:value", this, {
-							oldValue : value_,
-							newValue : value_
-						});
-					}
-				},
+				// set_value : function(value_) {
+				// var changed = value_ !== this.get_value();
+				// this._super.apply(this, arguments);
+				// if (!changed) {
+				// this.trigger("change:value", this, {
+				// oldValue : value_,
+				// newValue : value_
+				// });
+				// }
+				// },
 				init : function(field_manager, node) {
 					var self = this;
 					this._super(field_manager, node);
@@ -140,8 +140,16 @@ openerp.image_local = function(instance) {
 								// 生成dialog是自动打开
 								autoOpen : true,
 								height : 160,
-								width : 500,
+								width : 600,
 								modal : true,
+								show : {
+									effect : "blind",
+									duration : 777,
+								},
+								hide : {
+									effect : "explode",
+									duration : 777,
+								},
 								buttons : {
 									"Confirm" : function() {
 										var pic_obj = new Image();
@@ -159,14 +167,16 @@ openerp.image_local = function(instance) {
 											self.do_warn(_t("Remote Picture"), _t("There was a problem while get your pic"));
 										};// 它在图像载入失败后调用，图像载入失败不会调用onload事件。
 										$(this).dialog("close");
-										// dialog时用完后必须要移除，不然val不会改变
-										$(this).remove();
 										return true;
 									},
 								// "Cancel" : function() {
 								// $(this).dialog("close");
 								// return false;
 								// }
+								},
+								close : function(ev, ui) {
+									// dialog时用完后必须要移除，不然val不会改变
+									$(this).remove();
 								},
 							});
 					// $url_dialog.dialog('open');

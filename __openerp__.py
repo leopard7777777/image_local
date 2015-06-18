@@ -16,7 +16,9 @@
         'views/image_file_views.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
-    'auto_install': True
+    'installable': True,
+    'auto_install': False,
+    'application': True,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
