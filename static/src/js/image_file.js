@@ -144,11 +144,11 @@ openerp.image_local = function(instance) {
 								modal : true,
 								show : {
 									effect : "blind",
-									duration : 777,
+									duration : 555,
 								},
 								hide : {
 									effect : "explode",
-									duration : 777,
+									duration : 555,
 								},
 								buttons : {
 									"Confirm" : function() {
