@@ -83,7 +83,7 @@ openerp.image_local = function(instance) {
 					});
 					$img.on('error', function() {
 						$img.attr('src', self.placeholder);
-						instance.webclient.notification.warn(_t("Image"), _t("Could not display the selected image."));
+						instance.webclient.notification.warn(_t("Image"), _t("Could not display the image."));
 					});
 				},
 				on_clear : function() {
@@ -141,6 +141,7 @@ openerp.image_local = function(instance) {
 								autoOpen : true,
 								height : 160,
 								width : 600,
+								zIndex : 1777,
 								modal : true,
 								show : {
 									effect : "blind",

@@ -2,7 +2,7 @@
 
 from openerp.osv import fields, osv
 
-class image_local(osv.osv):
+class image_local(osv.osv_abstract):
     _name = "image.local"
 
     _columns = {
