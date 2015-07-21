@@ -27,27 +27,44 @@ openerp.image_local = function(instance) {
 	});
 
 	instance.web.ListView.List.include({
-		render : function() {
-			var self = this;
-			self._super();
-			$.each(this.$current.find('td.oe_list_field_image'), function(index, value) {
-				if (decodeURIComponent($(value).text()).indexOf("http://") != 0) {
+		render_cell : function(record, column) {
+			var res = this._super(record, column);
+			if (column.widget == 'image') {
+				if (decodeURIComponent(res).indexOf("http://") != 0) {
 					// 获取图片的http route
-					url = self.session.url('/web/images/get', {
-						file_name : $(value).text()
+					url = this.session.url('/web/images/get', {
+						file_name : res
 					});
 				} else {
-					url = decodeURIComponent($(value).text());
+					url = decodeURIComponent(res);
 				}
-				$(value).tooltip({
-					delay : {
-						show : 500,
-						hide : 500,
-					},
-					title : "<img class='.oe_tooltip_technical' src='" + url + "' style='max-width: 320px;' />",
-				});
-			});
-		}
+				res = "<span class='oe_avatar'><img src='" + url + "' style='max-width: 120px;' /></span>";
+			}
+			return res;
+		},
+	// render : function() {
+	// var self = this;
+	// self._super();
+	// $.each(this.$current.find('td.oe_list_field_image'), function(index,
+	// value) {
+	// if (decodeURIComponent($(value).text()).indexOf("http://") != 0) {
+	// // 获取图片的http route
+	// url = self.session.url('/web/images/get', {
+	// file_name : $(value).text()
+	// });
+	// } else {
+	// url = decodeURIComponent($(value).text());
+	// }
+	// $(value).tooltip({
+	// delay : {
+	// show : 500,
+	// hide : 500,
+	// },
+	// title : "<img class='.oe_tooltip_technical' src='" + url + "'
+	// style='max-width: 320px;' />",
+	// });
+	// });
+	// }
 	});
 
 	instance.web.form.FieldImageFile = instance.web.form.FieldBinaryImage
