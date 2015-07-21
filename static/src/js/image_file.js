@@ -6,7 +6,7 @@ openerp.image_local = function(instance) {
 	instance.web_kanban.KanbanRecord.include({
 		kanban_image : function(model, field, id, cache, options) {
 			// 获取图片的http route
-			if (field) {
+			if (field && this.record[field]) {
 				u = this.record[field].value;
 				if (u) {
 					if (decodeURIComponent(u).indexOf("http://") != 0) {
@@ -23,6 +23,30 @@ openerp.image_local = function(instance) {
 				url = no_image;
 			}
 			return url;
+		}
+	});
+
+	instance.web.ListView.List.include({
+		render : function() {
+			var self = this;
+			self._super();
+			$.each(this.$current.find('td.oe_list_field_image'), function(index, value) {
+				if (decodeURIComponent($(value).text()).indexOf("http://") != 0) {
+					// 获取图片的http route
+					url = self.session.url('/web/images/get', {
+						file_name : $(value).text()
+					});
+				} else {
+					url = decodeURIComponent($(value).text());
+				}
+				$(value).tooltip({
+					delay : {
+						show : 500,
+						hide : 500,
+					},
+					title : "<img class='.oe_tooltip_technical' src='" + url + "' style='max-width: 320px;' />",
+				});
+			});
 		}
 	});
 
