@@ -240,6 +240,6 @@ openerp.image_local = function(instance) {
 			});
 
 	instance.web.form.widgets = instance.web.form.widgets.extend({
-		'image' : 'instance.web.form.FieldImageFile',
+		'msap_image' : 'instance.web.form.FieldImageFile',
 	});
 };

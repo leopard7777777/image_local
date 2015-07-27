@@ -10,7 +10,6 @@ import simplejson
 
 from openerp import http
 import openerp
-from openerp.addons.web.controllers.main import Binary
 
 
 class image_file(http.Controller):
