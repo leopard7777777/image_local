@@ -29,7 +29,7 @@ openerp.image_local = function(instance) {
 	instance.web.ListView.List.include({
 		render_cell : function(record, column) {
 			var res = this._super(record, column);
-			if (column.widget == 'image') {
+			if (column.widget == 'msap_image') {
 				if (decodeURIComponent(res).indexOf("http://") != 0) {
 					// 获取图片的http route
 					url = this.session.url('/web/images/get', {
