@@ -11,3 +11,8 @@
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 	-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+.openerp td .oe_avatar > img{
+	margin-bottom: 0;
+	max-height: 60px;
+}
