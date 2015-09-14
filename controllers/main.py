@@ -2,19 +2,34 @@
 
 import StringIO
 import os
-import time
-import base64
+# import time
+# import base64
 import md5
-
+import werkzeug
 import simplejson
 
 from openerp import http
-import openerp
-
+# import openerp
+from openerp.http import request
+import re
 
 class image_file(http.Controller):
 
-    @http.route('/web/images/get', type='http', auth="user")
+    @http.route('/web/image/query' ,type='http',auth="public")
+    def query(self,model, id, field,**kw):
+        cr, uid, context, registry = request.cr, request.uid, request.context, request.registry
+        model_obj = registry[model]
+        for record in model_obj.browse(cr,uid,int(id),context=context):
+            uri =  getattr(record,field)
+            if not uri:
+                return werkzeug.utils.redirect("/web/static/src/img/placeholder.png", 303)
+            elif re.findall('^http[s]?://',uri):
+                return werkzeug.utils.redirect(uri, 303)
+            else:
+                return werkzeug.utils.redirect("/web/images/get/%s" % uri, 303)
+
+
+    @http.route('/web/images/get/<file_name>', type='http', auth="public")
     def get(self, file_name):
         # 防御本地包含
         file_name = file_name.replace("../", "")

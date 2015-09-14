@@ -3,26 +3,32 @@ openerp.image_local = function(instance) {
     var QWeb = openerp.web.qweb;
     var no_image = "/web/static/src/img/placeholder.png";
 
+    getRealImage = function(u) {
+        if (!/^http[s]?:/i.test(decodeURIComponent(u))) {
+            return this.session.url('/web/images/get/' + u, {});
+        } else {
+            return decodeURIComponent(u);
+        }
+    }
+
     instance.web_kanban.KanbanRecord.include({
         kanban_image: function(model, field, id, cache, options) {
-            // 获取图片的http route
+            var u = undefined;
             if (field && this.record[field]) {
                 u = this.record[field].value;
-                if (u) {
-                    if (!/^http[s]?:/i.test(decodeURIComponent(u))) {
-                        url = this.session.url('/web/images/get', {
-                            file_name: u
-                        });
-                    } else {
-                        url = decodeURIComponent(u);
-                    }
-                } else {
-                    url = no_image;
-                }
-            } else {
-                url = no_image;
             }
-            return url;
+            if (u) {
+                return getRealImage(u);
+            } else if (model) {
+                return this.session.url('/web/image/query', {
+                    model: model,
+                    field: field,
+                    id: id
+                });
+            }
+            // else {
+            //     return no_image;
+            // }
         }
     });
 
@@ -30,15 +36,15 @@ openerp.image_local = function(instance) {
         render_cell: function(record, column) {
             var res = this._super(record, column);
             if (column.widget == 'msap_image') {
-                if (!/^http[s]?:/i.test(decodeURIComponent(res))) {
-                    // 获取图片的http route
-                    url = this.session.url('/web/images/get', {
-                        file_name: res
-                    });
-                } else {
-                    url = decodeURIComponent(res);
-                }
-                res = "<span class='oe_avatar'><img src='" + url + "' style='max-width: 120px;' /></span>";
+                // if (!/^http[s]?:/i.test(decodeURIComponent(res))) {
+                //     // 获取图片的http route
+                //     url = this.session.url('/web/images/get', {
+                //         file_name: res
+                //     });
+                // } else {
+                //     url = decodeURIComponent(res);
+                // }
+                res = "<span class='oe_avatar'><img src='" + getRealImage(res) + "' style='max-width: 120px;' /></span>";
             }
             return res;
         },
@@ -82,14 +88,15 @@ openerp.image_local = function(instance) {
                      **********************************************************/
                 ) {
                     // 此处url解码后，根据是否有http://打头来判断是本地图片还是网络图片
-                    if (!/^http[s]?:/i.test(decodeURIComponent(p_val))) {
-                        // 获取图片的http route
-                        url = this.session.url('/web/images/get', {
-                            file_name: this.get('value')
-                        });
-                    } else {
-                        url = decodeURIComponent(p_val);
-                    }
+                    // if (!/^http[s]?:/i.test(decodeURIComponent(p_val))) {
+                    //     // 获取图片的http route
+                    //     url = this.session.url('/web/images/get', {
+                    //         file_name: this.get('value')
+                    //     });
+                    // } else {
+                    //     url = decodeURIComponent(p_val);
+                    // }
+                    url = getRealImage(p_val);
                 }
                 /*******************************************************
                  * else if (this.get('value')) { var id = JSON
