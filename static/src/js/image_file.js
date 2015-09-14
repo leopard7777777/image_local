@@ -5,7 +5,7 @@ openerp.image_local = function(instance) {
 
     getRealImage = function(u) {
         if (!/^http[s]?:/i.test(decodeURIComponent(u))) {
-            return this.session.url('/web/images/get/' + u, {});
+            return instance.session.url('/web/images/get/' + u, {});
         } else {
             return decodeURIComponent(u);
         }
