@@ -12,6 +12,10 @@ from openerp import http
 # import openerp
 from openerp.http import request
 import re
+import logging
+
+
+_logger = logging.getLogger(__name__)
 
 class image_file(http.Controller):
 
@@ -21,12 +25,14 @@ class image_file(http.Controller):
         model_obj = registry[model]
         for record in model_obj.browse(cr,uid,int(id),context=context):
             uri =  getattr(record,field)
-            if not uri:
+            try:
+                if re.findall('^http[s]?://',uri):
+                    return werkzeug.utils.redirect(uri, 303)
+                else:
+                    return werkzeug.utils.redirect("/web/images/get/%s" % uri, 303)
+            except Exception,e:
+                _logger.warn(e)
                 return werkzeug.utils.redirect("/web/static/src/img/placeholder.png", 303)
-            elif re.findall('^http[s]?://',uri):
-                return werkzeug.utils.redirect(uri, 303)
-            else:
-                return werkzeug.utils.redirect("/web/images/get/%s" % uri, 303)
 
 
     @http.route('/web/images/get/<file_name>', type='http', auth="public")
@@ -39,7 +45,7 @@ class image_file(http.Controller):
                 content = file.read()
                 return content
         except:
-            return ""
+            return werkzeug.utils.redirect("/web/static/src/img/placeholder.png", 303)
     
     @http.route('/web/images/upload', type='http', auth="user")
     def upload(self, callback, ufile):
